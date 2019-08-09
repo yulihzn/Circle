@@ -31,6 +31,13 @@ export default class GameWorld extends cc.Component {
     npcList:Npc[] = [];
     shadow: cc.Node;
     shadowarr:number[] = [110,100,90,80,70,60,50,40,30,20,10,0,10,20,30,40,50,60,70,80,90,100,110,120];
+    colorarr:number[] = [233,235,237,239,241,243,245,247,249,251,253,255,253,251,249,247,245,243,241,239,237,235,233,231];
+    spritebasebg:cc.Node;
+    spritebg:cc.Node;
+    spritewalltop:cc.Node;
+    spritewallbottom:cc.Node;
+    spritewallleft:cc.Node;
+    spritewallright:cc.Node;
     onLoad() {
         //关闭调试
         // cc.director.setDisplayStats(false);
@@ -49,6 +56,12 @@ export default class GameWorld extends cc.Component {
         // cc.PhysicsManager.DrawBits.e_shapeBit
         ;
         cc.director.on(EventConstant.TIME_CHANGE, (event) => { this.changeShadow(event.detail.time) });
+        this.spritebasebg = this.node.getChildByName('basebg');
+        this.spritebg = this.node.getChildByName('background');
+        this.spritewalltop = this.node.getChildByName('background').getChildByName('airwalltop').getChildByName('sprite');
+        this.spritewallbottom = this.node.getChildByName('background').getChildByName('airwallbottom').getChildByName('sprite');
+        this.spritewallleft = this.node.getChildByName('background').getChildByName('airwallleft').getChildByName('sprite');
+        this.spritewallright = this.node.getChildByName('background').getChildByName('airwallright').getChildByName('sprite');
         this.shadow = this.node.getChildByName('shadow');
         this.shadow.zIndex = 8000;
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
@@ -57,7 +70,7 @@ export default class GameWorld extends cc.Component {
         this.player.node.zIndex = 2000;
         let width = 1600;
         for(let i = 0;i < 100;i++){
-            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)));
+            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),1+Random.rand());
         }
         for(let i = 0;i < 100;i++){
             this.addBuilding(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Random.getRandomNum(1,3)+Random.rand());
@@ -66,13 +79,20 @@ export default class GameWorld extends cc.Component {
     
     changeShadow(time: number) {
         this.shadow.opacity = this.shadowarr[time];
+        this.spritebasebg.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
+        this.spritebg.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
+        this.spritewalltop.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
+        this.spritewallbottom.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
+        this.spritewallleft.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
+        this.spritewallright.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
     }
     
-    addNpc(pos:cc.Vec2){
+    addNpc(pos:cc.Vec2,scale:number){
         let npc = cc.instantiate(this.npcPrefab).getComponent(Npc);
         npc.node.parent = this.node;
         npc.node.position = pos;
         npc.node.zIndex = 1000;
+        npc.node.scale = scale;
         this.npcList.push(npc);
     }
     addBuilding(pos:cc.Vec2,scale:number){

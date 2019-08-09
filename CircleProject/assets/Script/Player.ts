@@ -43,7 +43,7 @@ export default class Player extends cc.Component {
         let mul = absh > absv ? absh : absv;
         mul = mul == 0 ? 1 : mul;
         let movement = cc.v2(h, v);
-        let speed = 300;
+        let speed = 200;
         if (speed < 0) {
             speed = 0;
         }

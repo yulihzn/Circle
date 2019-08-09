@@ -25,6 +25,7 @@ export default class Npc extends cc.Component {
         this.isDied = false;
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.sprite = this.node.getChildByName('sprite');
+        this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
     }
 
     move(pos: cc.Vec2) {
@@ -65,9 +66,11 @@ export default class Npc extends cc.Component {
         this.isDied = true;
     }
     timeDelay = 0;
+    rate = 3;
     isTimeDelay(dt: number): boolean {
         this.timeDelay += dt;
-        if (this.timeDelay > 1) {
+        if (this.timeDelay > this.rate) {
+            this.rate = Random.getRandomNum(1,6);
             this.timeDelay = 0;
             return true;
         }
