@@ -1,0 +1,32 @@
+{
+  "ver": "2.3.1",
+  "uuid": "c706d14f-b0f1-4326-b116-2ba9e2097990",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "platformSettings": {},
+  "subMetas": {
+    "joystickbg": {
+      "ver": "1.0.4",
+      "uuid": "a9ba17e5-1ab5-40b8-b441-a8c6c4058d33",
+      "rawTextureUuid": "c706d14f-b0f1-4326-b116-2ba9e2097990",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 32,
+      "height": 32,
+      "rawWidth": 32,
+      "rawHeight": 32,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
