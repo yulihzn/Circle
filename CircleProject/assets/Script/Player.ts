@@ -13,6 +13,7 @@ import { EventConstant } from './EventConstant';
 import Npc from './Npc';
 import Circle from './Circle';
 import GameStart from './ui/GameStart';
+import AudioPlayer from './utils/AudioPlayer';
 
 @ccclass
 export default class Player extends Circle {
@@ -89,6 +90,7 @@ export default class Player extends Circle {
         if(npc&&!this.isProtecting&&!npc.isProtecting){
             if(this.checkGoodLevelValid(npc.level)){
                 this.transfromScale(npc.level,true);
+                cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.PLAYER_UPGRADE}});
                 if(npc.level==1){
                     this.isUpgraded = true;
                 }
@@ -99,8 +101,12 @@ export default class Player extends Circle {
                 //比现在大
                 if(this.level>0){
                     this.transfromScale(this.level-1,true);
+                    cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.PLAYER_HIT}});
                     if(this.isUpgraded&&this.level-1==0){
+                        this.isUpgraded = false;
+                        this.init(0);
                         cc.director.emit(EventConstant.GAME_OVER);
+                        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.GAME_OVER}});
                     }
                     
                 }

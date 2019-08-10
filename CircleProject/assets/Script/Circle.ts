@@ -20,7 +20,7 @@ export default class Circle extends cc.Component {
     star:cc.Sprite;
     isDied = false;//是否死亡
     rigidbody: cc.RigidBody;
-    speed:number = 200;
+    speed:number = 100;
     protectingTime = 1;
     isProtecting = false;
     level = 0;
@@ -80,7 +80,7 @@ export default class Circle extends cc.Component {
     upgrade(level:number){
         this.level = level;
         this.node.scale = 1+level/10;
-        this.speed = Circle.MAX_LEVEL*10-10*level+50;
+        this.speed = Circle.MAX_LEVEL*9-9*level+50;
         this.changeRes(level);
     }
     changeRes(level:number){

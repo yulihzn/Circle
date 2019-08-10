@@ -1,5 +1,6 @@
 import GameWorld from "../GameWorld";
 import { EventConstant } from "../EventConstant";
+import Joystick from "../Joystick";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -46,7 +47,12 @@ export default class GameStart extends cc.Component {
         this.startDialog.active = false;
         this.finishDialog.active = true;
         this.overDialog.active = false;
+        let joy = this.joystick.getComponent(Joystick);
+        if(joy){
+            joy.init();
+        }
         this.joystick.active = false;
+        this.world.init();
     }
     gameStart(){
         GameStart.isPaused = false;
@@ -54,12 +60,20 @@ export default class GameStart extends cc.Component {
         this.finishDialog.active = false;
         this.overDialog.active = false;
         this.joystick.active = true;
+        let joy = this.joystick.getComponent(Joystick);
+        if(joy){
+            joy.init();
+        }
     }
     gameOver(){
         GameStart.isPaused = true;
         this.startDialog.active = false;
         this.finishDialog.active = false;
         this.overDialog.active = true;
+        let joy = this.joystick.getComponent(Joystick);
+        if(joy){
+            joy.init();
+        }
         this.joystick.active = false;
     }
 

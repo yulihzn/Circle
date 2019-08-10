@@ -27,6 +27,7 @@ export default class GameWorld extends cc.Component {
     buildingPrefab: cc.Prefab = null;
     private timeDelay = 0;
     private checkTimeDelay = 0;
+    actorLayer:cc.Node;
 
     player: Player = null;
     npcList:Npc[] = [];
@@ -65,22 +66,30 @@ export default class GameWorld extends cc.Component {
         this.spritewallleft = this.node.getChildByName('background').getChildByName('airwallleft').getChildByName('sprite');
         this.spritewallright = this.node.getChildByName('background').getChildByName('airwallright').getChildByName('sprite');
         this.shadow = this.node.getChildByName('shadow');
+        this.actorLayer = this.node.getChildByName('actorlayer');
+        this.actorLayer.zIndex = 2000;
         this.shadow.zIndex = 8000;
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
-        this.player.node.position = cc.v2(0,0);
-        this.player.node.zIndex = 2000;
+        this.player.node.zIndex = 3000;
+        this.init();
+    }
+    init(){
+        this.actorLayer.removeAllChildren();
+        this.scheduleOnce(()=>{this.player.node.setPosition(cc.v2(0,0));},0.1)
         this.player.init(0);
+        let width = 1600;
+        for(let i = 0;i < 100;i++){
+            this.addBuilding(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Random.getRandomNum(1,3)+Random.rand());
+        }
+        this.scheduleOnce(()=>{this.delayAddNpcs();},0.2);
+    }
+    delayAddNpcs(){
         let width = 1600;
         for(let i = 0;i < 400;i++){
             this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),Random.getRandomNum(0,Circle.MAX_LEVEL));
         }
-        for(let i = 0;i < Circle.MAX_LEVEL+1;i++){
-            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),i); 
-        }
-        for(let i = 0;i < 100;i++){
-            this.addBuilding(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Random.getRandomNum(1,3)+Random.rand());
-        }
+        
     }
     
     changeShadow(time: number) {
@@ -96,7 +105,7 @@ export default class GameWorld extends cc.Component {
     
     addNpc(pos:cc.Vec2,level:number){
         let npc = cc.instantiate(this.npcPrefab).getComponent(Npc);
-        npc.node.parent = this.node;
+        npc.node.parent = this.actorLayer;
         npc.node.position = pos;
         npc.node.zIndex = 1000;
         npc.init(level);

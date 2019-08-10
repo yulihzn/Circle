@@ -8,6 +8,8 @@ export class EventConstant extends cc.Component{
     public static readonly GAME_FINISHED = 'GAME_FINISHED';
     public static readonly GAME_OVER = 'GAME_OVER';
     public static readonly GAME_START = 'GAME_START';
+    public static readonly PLAY_AUDIO = 'PLAY_AUDIO';
+    
     public static eventHandler:cc.Node = new cc.Node();
     // LIFE-CYCLE CALLBACKS:
 
