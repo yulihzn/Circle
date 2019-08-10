@@ -1,4 +1,6 @@
 import Random from "./utils/Random";
+import Circle from "./Circle";
+import { EventConstant } from "./EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -13,58 +15,20 @@ import Random from "./utils/Random";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Npc extends cc.Component {
+export default class Npc extends Circle {
 
-    isMoving = false;//是否移动中
-    private sprite: cc.Node;
-    isDied = false;//是否死亡
-    rigidbody: cc.RigidBody;
     // LIFE-CYCLE CALLBACKS:
+
 
     onLoad() {
         this.isDied = false;
         this.rigidbody = this.getComponent(cc.RigidBody);
-        this.sprite = this.node.getChildByName('sprite');
+        this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        this.star = this.node.getChildByName('sprite').getChildByName('star').getComponent(cc.Sprite);
         this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
+        cc.director.on(EventConstant.PLAYER_LEVEL_UPDATE, (event) => { this.changeColor(event.detail.level);});
     }
 
-    move(pos: cc.Vec2) {
-        if (this.isDied) {
-            return;
-        }
-        let h = pos.x;
-        let v = pos.y;
-        let absh = Math.abs(h);
-        let absv = Math.abs(v);
-
-        let mul = absh > absv ? absh : absv;
-        mul = mul == 0 ? 1 : mul;
-        let movement = cc.v2(h, v);
-        let speed = 100;
-        if (speed < 0) {
-            speed = 0;
-        }
-        movement = movement.mul(speed);
-        this.rigidbody.linearVelocity = movement;
-        this.isMoving = h != 0 || v != 0;
-    }
-
-    start() {
-        if (!this.node) {
-            return;
-        }
-    }
-
-    takeDamage(damage: number): boolean {
-        return true;
-    }
-
-    killed() {
-        if (this.isDied) {
-            return;
-        }
-        this.isDied = true;
-    }
     timeDelay = 0;
     rate = 3;
     isTimeDelay(dt: number): boolean {
@@ -76,7 +40,17 @@ export default class Npc extends cc.Component {
         }
         return false;
     }
-    update(dt) {
+    changeColor(level:number){
+        let rank = this.getCirleRank(this.level);
+        let npcrank = this.getCirleRank(level);
+        if(Math.abs(npcrank-rank)>3){
+            this.sprite.node.color = cc.color(40,40,40);
+        }else{
+            this.sprite.node.color = cc.color(255,255,255);
+        }
+    }
+    
+    update(dt:number) {
         if(this.isTimeDelay(dt)){
             this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
         }

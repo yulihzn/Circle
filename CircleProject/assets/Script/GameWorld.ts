@@ -3,6 +3,7 @@ import { EventConstant } from "./EventConstant";
 import Npc from "./Npc";
 import Random from "./utils/Random";
 import Building from "./building/Building";
+import Circle from "./Circle";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,6 +39,7 @@ export default class GameWorld extends cc.Component {
     spritewallbottom:cc.Node;
     spritewallleft:cc.Node;
     spritewallright:cc.Node;
+    
     onLoad() {
         //关闭调试
         // cc.director.setDisplayStats(false);
@@ -68,9 +70,13 @@ export default class GameWorld extends cc.Component {
         this.player.node.parent = this.node;
         this.player.node.position = cc.v2(0,0);
         this.player.node.zIndex = 2000;
+        this.player.init(0);
         let width = 1600;
-        for(let i = 0;i < 100;i++){
-            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),1+Random.rand());
+        for(let i = 0;i < 400;i++){
+            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),Random.getRandomNum(0,Circle.MAX_LEVEL));
+        }
+        for(let i = 0;i < Circle.MAX_LEVEL+1;i++){
+            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),i); 
         }
         for(let i = 0;i < 100;i++){
             this.addBuilding(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Random.getRandomNum(1,3)+Random.rand());
@@ -78,7 +84,8 @@ export default class GameWorld extends cc.Component {
     }
     
     changeShadow(time: number) {
-        this.shadow.opacity = this.shadowarr[time];
+        // this.shadow.opacity = this.shadowarr[time];
+        this.shadow.opacity = 0;
         this.spritebasebg.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
         this.spritebg.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
         this.spritewalltop.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
@@ -87,12 +94,12 @@ export default class GameWorld extends cc.Component {
         this.spritewallright.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
     }
     
-    addNpc(pos:cc.Vec2,scale:number){
+    addNpc(pos:cc.Vec2,level:number){
         let npc = cc.instantiate(this.npcPrefab).getComponent(Npc);
         npc.node.parent = this.node;
         npc.node.position = pos;
         npc.node.zIndex = 1000;
-        npc.node.scale = scale;
+        npc.init(level);
         this.npcList.push(npc);
     }
     addBuilding(pos:cc.Vec2,scale:number){
