@@ -80,13 +80,13 @@ export default class GameWorld extends cc.Component {
         this.player.init(0);
         let width = 1600;
         for(let i = 0;i < 100;i++){
-            this.addBuilding(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Random.getRandomNum(1,3)+Random.rand());
+            this.addBuilding(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Random.getRandomNum(1,5)+Random.rand());
         }
         this.scheduleOnce(()=>{this.delayAddNpcs();},0.2);
     }
     delayAddNpcs(){
         let width = 1600;
-        for(let i = 0;i < 400;i++){
+        for(let i = 0;i < 300;i++){
             this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),Random.getRandomNum(0,Circle.MAX_LEVEL));
         }
         

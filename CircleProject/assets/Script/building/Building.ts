@@ -28,13 +28,16 @@ export default class Building extends cc.Component {
         this.collider = this.getComponent(cc.PhysicsCircleCollider);
         let colorStr = '#579725';//绿色
         this.collider.sensor = true;
+        this.node.opacity = 128;
         if (Random.getHalfChance()) {
             colorStr = '#C71585'//紫色
             this.collider.sensor = true;
+            this.node.opacity = 128;
         }
         if (Random.getHalfChance()) {
-            colorStr = '#A3A3A3'//灰色
+            colorStr = '#333333'//灰色
             this.collider.sensor = false;
+            this.node.opacity = 255;
         }
         this.collider.apply();
         this.sprite.color = cc.color(255, 255, 255).fromHEX(colorStr);

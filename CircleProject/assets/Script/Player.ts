@@ -22,6 +22,7 @@ export default class Player extends Circle {
     onLoad() {
         this.isDied = false;
         this.rigidbody = this.getComponent(cc.RigidBody);
+        this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         this.star = this.node.getChildByName('sprite').getChildByName('star').getComponent(cc.Sprite);
         cc.director.on(EventConstant.PLAYER_MOVE
@@ -45,19 +46,19 @@ export default class Player extends Circle {
             spriteframe2 = arr[level-1];
         }else if(level > 5 && level <= 10){
             spriteframe1 = this.circle002;
-            spriteframe2 = arr[level-5];
+            spriteframe2 = arr[level-6];
         }else if(level > 10 && level <= 15){
             spriteframe1 = this.circle003;
-            spriteframe2 = arr[level-10];
+            spriteframe2 = arr[level-11];
         }else if(level > 15 && level <= 20){
             spriteframe1 = this.circle004;
-            spriteframe2 = arr[level-15];
+            spriteframe2 = arr[level-16];
         }else if(level > 20 && level <= 25){
             spriteframe1 = this.circle005;
-            spriteframe2 = arr[level-20];
+            spriteframe2 = arr[level-21];
         }else if(level > 25 && level <= 30){
             spriteframe1 = this.circle006;
-            spriteframe2 = arr[level-25];
+            spriteframe2 = arr[level-26];
         }else if(level > 30){
             spriteframe1 = this.circle007;
             spriteframe2 = null;
