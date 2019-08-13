@@ -4,6 +4,7 @@ import Npc from "./Npc";
 import Random from "./utils/Random";
 import Building from "./building/Building";
 import Circle from "./Circle";
+import Item from "./item/Item";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -25,6 +26,9 @@ export default class GameWorld extends cc.Component {
     npcPrefab: cc.Prefab = null;
     @property(cc.Prefab)
     buildingPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    shieldPrefab:cc.Prefab = null;
+
     private timeDelay = 0;
     private checkTimeDelay = 0;
     actorLayer:cc.Node;
@@ -76,18 +80,29 @@ export default class GameWorld extends cc.Component {
     }
     init(){
         this.actorLayer.removeAllChildren();
-        this.scheduleOnce(()=>{this.player.node.setPosition(cc.v2(0,0));},0.1)
+        this.scheduleOnce(()=>{this.player.node.setPosition(cc.v2(0,0));},0.1);
         this.player.init(0);
+        this.scheduleOnce(()=>{
+            cc.director.emit(EventConstant.PLAYER_LEVEL_UPDATE,{detail:{level:this.player.level}});
+        },0.1);
+        
         let width = 1600;
         for(let i = 0;i < 100;i++){
-            this.addBuilding(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Random.getRandomNum(1,5)+Random.rand());
+            this.addBuilding(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Random.getRandomNum(1,6)+Random.rand());
         }
         this.scheduleOnce(()=>{this.delayAddNpcs();},0.2);
+        for(let i = 0;i < 20;i++){
+            this.addItem(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Item.TYPE_SHIELD);
+        }
     }
     delayAddNpcs(){
         let width = 1600;
-        for(let i = 0;i < 300;i++){
-            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),Random.getRandomNum(0,Circle.MAX_LEVEL));
+        let range = cc.v2(0,Circle.MAX_LEVEL);
+        for(let i = 0;i < 400;i++){
+            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),Random.getRandomNum(range.x,range.y));
+        }
+        for(let i = 0;i < Circle.MAX_LEVEL+1;i++){
+            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),i);
         }
         
     }
@@ -102,13 +117,26 @@ export default class GameWorld extends cc.Component {
         this.spritewallleft.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
         this.spritewallright.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
     }
-    
+    addItem(pos:cc.Vec2,itemType:number){
+        let prefab = null;
+        switch(itemType){
+            case Item.TYPE_SHIELD:
+            prefab = this.shieldPrefab;
+            break;
+        }
+        let item = cc.instantiate(prefab).getComponent(Item);
+        item.itemType = itemType;
+        item.node.parent = this.actorLayer;
+        item.node.position = pos;
+        item.node.zIndex = 1000;
+    }
     addNpc(pos:cc.Vec2,level:number){
         let npc = cc.instantiate(this.npcPrefab).getComponent(Npc);
         npc.node.parent = this.actorLayer;
         npc.node.position = pos;
         npc.node.zIndex = 1000;
         npc.init(level);
+        npc.changeColor(this.player.level);
         this.npcList.push(npc);
     }
     addBuilding(pos:cc.Vec2,scale:number){

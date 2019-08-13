@@ -14,6 +14,8 @@ import Npc from './Npc';
 import Circle from './Circle';
 import GameStart from './ui/GameStart';
 import AudioPlayer from './utils/AudioPlayer';
+import Building from './building/Building';
+import Item from './item/Item';
 
 @ccclass
 export default class Player extends Circle {
@@ -24,53 +26,24 @@ export default class Player extends Circle {
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        this.rim = this.node.getChildByName('sprite').getChildByName('rim');
         this.star = this.node.getChildByName('sprite').getChildByName('star').getComponent(cc.Sprite);
         cc.director.on(EventConstant.PLAYER_MOVE
             , (event) => { this.move(event.detail.pos) });
     }
 
     update(dt) {
-        
-    }
-    getNextTargetSpriteframe():cc.SpriteFrame[]{
-        let arr = [null,this.star1,this.star2,this.star3,this.star4];
-        let level = this.level+1;
-       
-        let spriteframe1 = null;
-        let spriteframe2 = null;
-        if(level<1){
-            spriteframe1 = this.circle000;
-            spriteframe2 = null;
-        }else if(level > 0 && level <= 5){
-            spriteframe1 = this.circle001;
-            spriteframe2 = arr[level-1];
-        }else if(level > 5 && level <= 10){
-            spriteframe1 = this.circle002;
-            spriteframe2 = arr[level-6];
-        }else if(level > 10 && level <= 15){
-            spriteframe1 = this.circle003;
-            spriteframe2 = arr[level-11];
-        }else if(level > 15 && level <= 20){
-            spriteframe1 = this.circle004;
-            spriteframe2 = arr[level-16];
-        }else if(level > 20 && level <= 25){
-            spriteframe1 = this.circle005;
-            spriteframe2 = arr[level-21];
-        }else if(level > 25 && level <= 30){
-            spriteframe1 = this.circle006;
-            spriteframe2 = arr[level-26];
-        }else if(level > 30){
-            spriteframe1 = this.circle007;
-            spriteframe2 = null;
+        if(this.rim){
+            this.rim.opacity = this.isProtecting?200:0;
         }
-        return [spriteframe1,spriteframe2];
     }
-    /** 比现在高二级以上 且在2个范围以上 比现在低  */
+   
+    /** 比现在高3级以上 且在3个范围以上 比现在低  */
     checkBadLevelValid(npclevel){
         let offset = npclevel-this.level;
         let rank = this.getCirleRank(this.level);
         let npcrank = this.getCirleRank(npclevel);
-        if(Math.abs(npcrank-rank)>3){
+        if(Math.abs(npcrank-rank)>=3){
             return false;
         }
         if(offset>1||offset<0){
@@ -83,10 +56,25 @@ export default class Player extends Circle {
     checkGoodLevelValid(level){
         return level-this.level==1;
     }
-    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        if(GameStart.isPaused||this.level == Circle.MAX_LEVEL){
+
+    onBeginContact(contact:cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+        if(GameStart.isPaused){
             return;
         }
+        if(this.level == Circle.MAX_LEVEL){
+            cc.director.emit(EventConstant.GAME_FINISHED);
+            return;
+        }
+        let building = otherCollider.getComponent(Building);
+        if(building&&!building.isBlock){
+            contact.disabled = true;
+        }
+
+        let item = otherCollider.getComponent(Item);
+        if(item){
+            item.taken(this);
+        }
+
         let npc = otherCollider.node.getComponent(Npc);
         if(npc&&!this.isProtecting&&!npc.isProtecting){
             if(this.checkGoodLevelValid(npc.level)){
@@ -114,6 +102,7 @@ export default class Player extends Circle {
             }
         }
     }
+    
 
 
 }

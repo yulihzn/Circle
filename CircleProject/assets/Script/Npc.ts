@@ -27,7 +27,6 @@ export default class Npc extends Circle {
         this.star = this.node.getChildByName('sprite').getChildByName('star').getComponent(cc.Sprite);
         this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
         cc.director.on(EventConstant.PLAYER_LEVEL_UPDATE, (event) => { this.changeColor(event.detail.level);});
-        this.scheduleOnce(()=>{this.changeColor(0);},1);
     }
 
     timeDelay = 0;
@@ -43,8 +42,8 @@ export default class Npc extends Circle {
     }
     changeColor(level:number){
         let rank = this.getCirleRank(this.level);
-        let npcrank = this.getCirleRank(level);
-        if(Math.abs(npcrank-rank)>3){
+        let playerrank = this.getCirleRank(level);
+        if(Math.abs(playerrank-rank)>=3){
             this.sprite.node.color = cc.color(40,40,40);
         }else{
             this.sprite.node.color = cc.color(255,255,255);

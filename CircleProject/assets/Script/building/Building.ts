@@ -15,6 +15,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Building extends cc.Component {
+    isBlock = false;
     sprite: cc.Node;
     shadow: cc.Node;
     collider: cc.PhysicsCircleCollider;
@@ -26,18 +27,18 @@ export default class Building extends cc.Component {
         this.sprite = this.node.getChildByName('sprite');
         this.shadow = this.node.getChildByName('shadow');
         this.collider = this.getComponent(cc.PhysicsCircleCollider);
-        let colorStr = '#579725';//绿色
-        this.collider.sensor = true;
-        this.node.opacity = 128;
-        if (Random.getHalfChance()) {
+        let colorStr = '#333333'//灰色
+        this.isBlock = true;
+        this.node.opacity = 255;
+        if (Random.getRandomNum(0,100)>80) {
             colorStr = '#C71585'//紫色
-            this.collider.sensor = true;
             this.node.opacity = 128;
+            this.isBlock = false;
         }
-        if (Random.getHalfChance()) {
-            colorStr = '#333333'//灰色
-            this.collider.sensor = false;
-            this.node.opacity = 255;
+        if (Random.getRandomNum(0,100)>80) {
+            colorStr = '#579725';//绿色
+            this.node.opacity = 128;
+            this.isBlock = false;
         }
         this.collider.apply();
         this.sprite.color = cc.color(255, 255, 255).fromHEX(colorStr);

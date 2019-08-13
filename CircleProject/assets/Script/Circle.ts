@@ -22,10 +22,11 @@ export default class Circle extends cc.Component {
     isDied = false;//是否死亡
     rigidbody: cc.RigidBody;
     speed:number = 100;
-    protectingTime = 2;
+    protectingTime = 1.5;
     isProtecting = false;
     level = 0;
-    static readonly MAX_LEVEL = 30;
+    rim:cc.Node;
+    static readonly MAX_LEVEL = 31;
     @property(cc.SpriteFrame)
     circle000:cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
@@ -81,37 +82,44 @@ export default class Circle extends cc.Component {
     upgrade(level:number){
         this.level = level;
         this.node.scale = 1+level/10;
-        this.speed = (Circle.MAX_LEVEL-level)*8+40;
+        this.speed = (Circle.MAX_LEVEL-level)*8+100;
         this.changeRes(level);
     }
     changeRes(level:number){
+        let ss = this.getLevelSpriteframe(this.level);
+        this.sprite.spriteFrame = ss[0];
+        this.star.spriteFrame = ss[1];
+    }
+    getLevelSpriteframe(level:number):cc.SpriteFrame[]{
         let arr = [null,this.star1,this.star2,this.star3,this.star4];
+        let spriteframe1 = null;
+        let spriteframe2 = null;
         if(level<1){
-            this.sprite.spriteFrame = this.circle000;
-            this.star.spriteFrame = null;
+            spriteframe1 = this.circle000;
+            spriteframe2 = null;
         }else if(level > 0 && level <= 5){
-            this.sprite.spriteFrame = this.circle001;
-            this.star.spriteFrame = arr[level-1];
+            spriteframe1 = this.circle001;
+            spriteframe2 = arr[level-1];
         }else if(level > 5 && level <= 10){
-            this.sprite.spriteFrame = this.circle002;
-            this.star.spriteFrame = arr[level-6];
+            spriteframe1 = this.circle002;
+            spriteframe2 = arr[level-6];
         }else if(level > 10 && level <= 15){
-            this.sprite.spriteFrame = this.circle003;
-            this.star.spriteFrame = arr[level-11];
+            spriteframe1 = this.circle003;
+            spriteframe2 = arr[level-11];
         }else if(level > 15 && level <= 20){
-            this.sprite.spriteFrame = this.circle004;
-            this.star.spriteFrame = arr[level-16];
+            spriteframe1 = this.circle004;
+            spriteframe2 = arr[level-16];
         }else if(level > 20 && level <= 25){
-            this.sprite.spriteFrame = this.circle005;
-            this.star.spriteFrame = arr[level-21];
+            spriteframe1 = this.circle005;
+            spriteframe2 = arr[level-21];
         }else if(level > 25 && level <= 30){
-            this.sprite.spriteFrame = this.circle006;
-            this.star.spriteFrame = arr[level-26];
+            spriteframe1 = this.circle006;
+            spriteframe2 = arr[level-26];
         }else if(level > 30){
-            this.sprite.spriteFrame = this.circle007;
-            this.star.spriteFrame = null;
+            spriteframe1 = this.circle007;
+            spriteframe2 = null;
         }
-
+        return [spriteframe1,spriteframe2];
     }
     getCirleRank(level:number){
         if(level<1){
@@ -142,22 +150,18 @@ export default class Circle extends cc.Component {
         if(!this.anim){
             this.anim = this.getComponent(cc.Animation);
         }
-        let rim = this.node.getChildByName('sprite').getChildByName('rim');
-        if(rim){
-            rim.opacity = 200;
-        }
+        
         this.anim.playAdditive('PlayerChange');
         this.scheduleOnce(()=>{
             this.isProtecting = false;
             this.upgrade(level);
-            if(rim){
-                rim.opacity = 0;
-            }
             if(isPlayer){
                 cc.director.emit(EventConstant.PLAYER_LEVEL_UPDATE,{detail:{level:this.level}});
             }
         },this.protectingTime)
         this.rigidbody.linearVelocity = cc.Vec2.ZERO;
     }
-    // update (dt) {}
+    update (dt) {
+        
+    }
 }

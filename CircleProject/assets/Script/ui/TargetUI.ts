@@ -25,15 +25,27 @@ export default class TargetUI extends cc.Component {
         this.sprite = this.node.getChildByName('next').getChildByName('sprite').getComponent(cc.Sprite);
         this.star = this.node.getChildByName('next').getChildByName('sprite').getChildByName('star').getComponent(cc.Sprite);
         cc.director.on(EventConstant.PLAYER_LEVEL_UPDATE, (event) => { this.changeRes();});
+        this.node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+            cc.director.emit(EventConstant.ZOOM_UP,{detail:{isUp:true}});
+        }, this)
+
+        this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            cc.director.emit(EventConstant.ZOOM_UP,{detail:{isUp:false}});
+        }, this)
+
+        this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
+            cc.director.emit(EventConstant.ZOOM_UP,{detail:{isUp:false}});
+        }, this)
     }
 
     changeRes(){
         if(this.world&&this.world.player){
-            let spriteframes:cc.SpriteFrame[] = this.world.player.getNextTargetSpriteframe();
+            let spriteframes:cc.SpriteFrame[] = this.world.player.getLevelSpriteframe(this.world.player.level+1);
             this.sprite.spriteFrame = spriteframes[0];
             this.star.spriteFrame = spriteframes[1];
         }
     }
+    
     start () {
 
     }

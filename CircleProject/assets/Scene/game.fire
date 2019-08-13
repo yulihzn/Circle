@@ -268,6 +268,9 @@
     "buildingPrefab": {
       "__uuid__": "8e344b4b-c24e-4d43-a65f-0d99961f951f"
     },
+    "shieldPrefab": {
+      "__uuid__": "eb1b2753-92ce-479f-a185-c074b498491b"
+    },
     "_id": "43J7IJ6tVJYLgcfrlCrtpI"
   },
   {
@@ -1703,8 +1706,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 150,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4055,7 +4058,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 640,
+      "x": 25.7,
       "y": 360,
       "z": 0
     },
