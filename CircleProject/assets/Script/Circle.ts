@@ -22,7 +22,7 @@ export default class Circle extends cc.Component {
     isDied = false;//是否死亡
     rigidbody: cc.RigidBody;
     speed:number = 100;
-    protectingTime = 1.5;
+    protectingTime = 1;
     isProtecting = false;
     level = 0;
     rim:cc.Node;
