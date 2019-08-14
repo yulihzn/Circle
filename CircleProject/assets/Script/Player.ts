@@ -21,6 +21,7 @@ import Item from './item/Item';
 export default class Player extends Circle {
     isUpgraded = false;
     isProtecting = false;
+    isUpgrading = false;
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
         this.isDied = false;
@@ -65,6 +66,7 @@ export default class Player extends Circle {
         this.changeRes(level);
         this.node.runAction(cc.scaleTo(0.2,1+level/8));
         this.isProtecting = true;
+        this.isUpgrading = true;
         if(!this.anim){
             this.anim = this.getComponent(cc.Animation);
         }
@@ -72,6 +74,7 @@ export default class Player extends Circle {
         this.anim.playAdditive('PlayerChange');
         this.scheduleOnce(()=>{
             this.isProtecting = false;
+            this.isUpgrading = false;
             this.upgrade(level);
             cc.director.emit(EventConstant.PLAYER_LEVEL_UPDATE,{detail:{level:this.level}});
         },this.protectingTime)
@@ -98,7 +101,7 @@ export default class Player extends Circle {
 
         let npc = otherCollider.node.getComponent(Npc);
         if(npc){
-            if(this.checkGoodLevelValid(npc.level)){
+            if(this.checkGoodLevelValid(npc.level)&&!this.isUpgrading){
                 this.transfromScale(npc.level,true);
                 cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.PLAYER_UPGRADE}});
                 if(npc.level==1){
@@ -107,7 +110,7 @@ export default class Player extends Circle {
                 if(npc.level==Circle.MAX_LEVEL){
                     cc.director.emit(EventConstant.GAME_FINISHED);
                 }
-            }else if(this.checkBadLevelValid(npc.level)&&this.level>0){
+            }else if(this.checkBadLevelValid(npc.level)&&this.level>0&&!this.isProtecting){
                 this.transfromScale(this.level-1,false);
                     cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.PLAYER_HIT}});
                     if(this.isUpgraded&&this.level-1==0){
