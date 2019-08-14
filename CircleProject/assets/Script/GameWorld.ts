@@ -98,7 +98,7 @@ export default class GameWorld extends cc.Component {
     delayAddNpcs(){
         let width = 1600;
         let range = cc.v2(0,Circle.MAX_LEVEL);
-        for(let i = 0;i < 400;i++){
+        for(let i = 0;i < 300;i++){
             this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),Random.getRandomNum(range.x,range.y));
         }
         for(let i = 0;i < Circle.MAX_LEVEL+1;i++){

@@ -1,5 +1,6 @@
 import Random from "../utils/Random";
 import { EventConstant } from "../EventConstant";
+import GameStart from "../ui/GameStart";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,7 +20,8 @@ export default class Building extends cc.Component {
     sprite: cc.Node;
     shadow: cc.Node;
     collider: cc.PhysicsCircleCollider;
-    rigbody:cc.RigidBody;
+    rigidbody:cc.RigidBody;
+    isMovable = false;
     // LIFE-CYCLE CALLBACKS:
     shadowarr:number[] = [-1.1,-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1,1.2];
     shadowopacityarr:number[] = [20,40,60,80,100,120,140,160,180,200,220,240,220,200,180,160,140,120,100,80,60,40,20,0];
@@ -28,21 +30,22 @@ export default class Building extends cc.Component {
         this.sprite = this.node.getChildByName('sprite');
         this.shadow = this.node.getChildByName('shadow');
         this.collider = this.getComponent(cc.PhysicsCircleCollider);
-        this.rigbody = this.getComponent(cc.RigidBody);
-        this.rigbody.type = cc.RigidBodyType.Static;
+        this.rigidbody = this.getComponent(cc.RigidBody);
         let colorStr = '#333333'//灰色
         this.isBlock = true;
+        this.isMovable = false;
         this.node.opacity = 255;
         if (Random.getRandomNum(0,100)>70) {
             colorStr = '#C71585'//紫色
             this.node.opacity = 128;
+            this.isMovable = true;
             this.isBlock = false;
         }
         if (Random.getRandomNum(0,100)>70) {
             colorStr = '#579725';//绿色
             this.node.opacity = 128;
+            this.isMovable = false;
             this.isBlock = false;
-            this.rigbody.type = cc.RigidBodyType.Dynamic;
         }
         this.collider.apply();
         this.sprite.color = cc.color(255, 255, 255).fromHEX(colorStr);
@@ -56,8 +59,39 @@ export default class Building extends cc.Component {
     start() {
 
     }
-
-    // update (dt) {
-
-    // }
+    move(pos: cc.Vec2) {
+        if (GameStart.isPaused) {
+            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            return;
+        }
+        let h = pos.x;
+        let v = pos.y;
+        let absh = Math.abs(h);
+        let absv = Math.abs(v);
+        let mul = absh > absv ? absh : absv;
+        mul = mul == 0 ? 1 : mul;
+        let movement = cc.v2(h, v);
+        let sp = 300;
+        if (sp < 0) {
+            sp = 0;
+        }
+        movement = movement.mul(sp);
+        this.rigidbody.linearVelocity = movement;
+    }
+    timeDelay = 0;
+    rate = 3;
+    isTimeDelay(dt: number): boolean {
+        this.timeDelay += dt;
+        if (this.timeDelay > this.rate) {
+            this.rate = Random.getRandomNum(1,6);
+            this.timeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    update (dt) {
+        if(this.isTimeDelay(dt)&&this.isMovable){
+            this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
+        }
+    }
 }

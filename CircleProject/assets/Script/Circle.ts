@@ -82,7 +82,7 @@ export default class Circle extends cc.Component {
     upgrade(level:number){
         this.level = level;
         this.node.scale = 1+level/10;
-        this.speed = (Circle.MAX_LEVEL-level)*8+100;
+        this.speed = (Circle.MAX_LEVEL-level)*8+200-(Circle.MAX_LEVEL-level)*3;
         this.changeRes(level);
     }
     changeRes(level:number){
