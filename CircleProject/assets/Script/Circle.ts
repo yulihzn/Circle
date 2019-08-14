@@ -1,5 +1,5 @@
 import { EventConstant } from "./EventConstant";
-import GameStart from "./ui/GameStart";
+import GameUiStart from "./ui/GameUiStart";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,7 +23,6 @@ export default class Circle extends cc.Component {
     rigidbody: cc.RigidBody;
     speed:number = 100;
     protectingTime = 1;
-    isProtecting = false;
     level = 0;
     rim:cc.Node;
     static readonly MAX_LEVEL = 31;
@@ -57,7 +56,7 @@ export default class Circle extends cc.Component {
         this.upgrade(level);
     }
     move(pos: cc.Vec2) {
-        if (GameStart.isPaused) {
+        if (GameUiStart.isPaused) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             return;
         }
@@ -140,27 +139,7 @@ export default class Circle extends cc.Component {
             return 7;
         }
     }
-    transfromScale(level:number,isPlayer?:boolean){
-        if(this.isProtecting){
-            return;
-        }
-        this.changeRes(level);
-        this.node.runAction(cc.scaleTo(0.2,1+level/8));
-        this.isProtecting = true;
-        if(!this.anim){
-            this.anim = this.getComponent(cc.Animation);
-        }
-        
-        this.anim.playAdditive('PlayerChange');
-        this.scheduleOnce(()=>{
-            this.isProtecting = false;
-            this.upgrade(level);
-            if(isPlayer){
-                cc.director.emit(EventConstant.PLAYER_LEVEL_UPDATE,{detail:{level:this.level}});
-            }
-        },this.protectingTime)
-        this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-    }
+    
     update (dt) {
         
     }

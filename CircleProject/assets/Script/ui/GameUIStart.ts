@@ -15,7 +15,7 @@ import Joystick from "../Joystick";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class GameStart extends cc.Component {
+export default class GameUiStart extends cc.Component {
 
     //是否暂停
     static isPaused = true;
@@ -40,7 +40,7 @@ export default class GameStart extends cc.Component {
         cc.director.on(EventConstant.GAME_FINISHED, (event) => { this.gameFinish() });
         cc.director.on(EventConstant.GAME_START, (event) => {
             if(this.startDialog.active){
-                this.gameStart();
+                this.GameUiStart();
             }else if(this.isGuidShow){
                 this.guideCloseToStart();
                 this.scheduleOnce(()=>{this.isGuidShow = false;},3);
@@ -56,7 +56,7 @@ export default class GameStart extends cc.Component {
     }
   
     gameFinish(){
-        GameStart.isPaused = true;
+        GameUiStart.isPaused = true;
         this.startDialog.active = false;
         this.finishDialog.active = true;
         this.overDialog.active = false;
@@ -69,7 +69,7 @@ export default class GameStart extends cc.Component {
         this.world.init();
     }
     gameStart(){
-        GameStart.isPaused = true;
+        GameUiStart.isPaused = true;
         this.startDialog.active = false;
         this.finishDialog.active = false;
         this.overDialog.active = false;
@@ -77,7 +77,7 @@ export default class GameStart extends cc.Component {
         this.joystick.active = false;
     }
     guideCloseToStart(){
-        GameStart.isPaused = false;
+        GameUiStart.isPaused = false;
         this.startDialog.active = false;
         this.finishDialog.active = false;
         this.overDialog.active = false;
@@ -89,7 +89,7 @@ export default class GameStart extends cc.Component {
         }
     }
     gameOver(){
-        GameStart.isPaused = true;
+        GameUiStart.isPaused = true;
         this.startDialog.active = false;
         this.finishDialog.active = false;
         this.overDialog.active = true;

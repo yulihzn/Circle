@@ -11,7 +11,10 @@
   ],
   "design-resolution-height": 720,
   "design-resolution-width": 1280,
-  "excluded-modules": [],
+  "excluded-modules": [
+    "VideoPlayer",
+    "WebView"
+  ],
   "facebook": {
     "appID": "",
     "audience": {
@@ -34,7 +37,7 @@
     "height": 640,
     "width": 960
   },
-  "start-scene": "current",
+  "start-scene": "adc3b5ae-1d3e-40fd-b4f5-a7cd11fdbc6c",
   "use-customize-simulator": true,
   "use-project-simulator-setting": false
 }

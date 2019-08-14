@@ -12,7 +12,7 @@ const { ccclass, property } = cc._decorator;
 import { EventConstant } from './EventConstant';
 import Npc from './Npc';
 import Circle from './Circle';
-import GameStart from './ui/GameStart';
+import GameUiStart from './ui/GameUiStart';
 import AudioPlayer from './utils/AudioPlayer';
 import Building from './building/Building';
 import Item from './item/Item';
@@ -20,6 +20,7 @@ import Item from './item/Item';
 @ccclass
 export default class Player extends Circle {
     isUpgraded = false;
+    isProtecting = false;
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
         this.isDied = false;
@@ -57,8 +58,28 @@ export default class Player extends Circle {
         return level-this.level==1;
     }
 
+    transfromScale(level:number,isUprade:boolean){
+        if(this.isProtecting&&!isUprade){
+            return;
+        }
+        this.changeRes(level);
+        this.node.runAction(cc.scaleTo(0.2,1+level/8));
+        this.isProtecting = true;
+        if(!this.anim){
+            this.anim = this.getComponent(cc.Animation);
+        }
+        
+        this.anim.playAdditive('PlayerChange');
+        this.scheduleOnce(()=>{
+            this.isProtecting = false;
+            this.upgrade(level);
+            cc.director.emit(EventConstant.PLAYER_LEVEL_UPDATE,{detail:{level:this.level}});
+        },this.protectingTime)
+        this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+    }
+
     onBeginContact(contact:cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        if(GameStart.isPaused){
+        if(GameUiStart.isPaused){
             return;
         }
         if(this.level == Circle.MAX_LEVEL){
@@ -76,7 +97,7 @@ export default class Player extends Circle {
         }
 
         let npc = otherCollider.node.getComponent(Npc);
-        if(npc&&!this.isProtecting&&!npc.isProtecting){
+        if(npc){
             if(this.checkGoodLevelValid(npc.level)){
                 this.transfromScale(npc.level,true);
                 cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.PLAYER_UPGRADE}});
@@ -86,10 +107,8 @@ export default class Player extends Circle {
                 if(npc.level==Circle.MAX_LEVEL){
                     cc.director.emit(EventConstant.GAME_FINISHED);
                 }
-            }else if(this.checkBadLevelValid(npc.level)){
-                //比现在大
-                if(this.level>0){
-                    this.transfromScale(this.level-1,true);
+            }else if(this.checkBadLevelValid(npc.level)&&this.level>0){
+                this.transfromScale(this.level-1,false);
                     cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.PLAYER_HIT}});
                     if(this.isUpgraded&&this.level-1==0){
                         this.isUpgraded = false;
@@ -97,8 +116,6 @@ export default class Player extends Circle {
                         cc.director.emit(EventConstant.GAME_OVER);
                         cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.GAME_OVER}});
                     }
-                    
-                }
             }
         }
     }

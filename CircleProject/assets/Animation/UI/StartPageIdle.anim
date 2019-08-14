@@ -1,0 +1,71 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "StartPageIdle",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 2,
+  "sample": 60,
+  "speed": 0.1,
+  "wrapMode": 2,
+  "curveData": {
+    "paths": {
+      "bg3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -45
+            },
+            {
+              "frame": 2,
+              "value": 315
+            }
+          ]
+        }
+      },
+      "bg2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 135
+            },
+            {
+              "frame": 2,
+              "value": -225
+            }
+          ]
+        }
+      },
+      "bg1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 45
+            },
+            {
+              "frame": 2,
+              "value": 765
+            }
+          ]
+        }
+      },
+      "bg": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 2,
+              "value": -720
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

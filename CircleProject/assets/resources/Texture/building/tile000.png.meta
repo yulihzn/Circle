@@ -1,16 +1,16 @@
 {
   "ver": "2.3.1",
-  "uuid": "f8eab0dd-b762-4f66-a497-129f6f14195b",
+  "uuid": "bdd2f082-886b-414e-a68e-a528be92e230",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "platformSettings": {},
   "subMetas": {
-    "tile002": {
+    "tile000": {
       "ver": "1.0.4",
-      "uuid": "44377d43-8b53-494a-b7c1-6473e78e785c",
-      "rawTextureUuid": "f8eab0dd-b762-4f66-a497-129f6f14195b",
+      "uuid": "167b4774-d604-49cb-b5cc-798f517ee37e",
+      "rawTextureUuid": "bdd2f082-886b-414e-a68e-a528be92e230",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,

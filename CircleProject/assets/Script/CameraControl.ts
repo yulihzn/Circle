@@ -1,5 +1,6 @@
 import GameWorld from "./GameWorld";
 import { EventConstant } from "./EventConstant";
+import Utils from "./utils/Utils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,7 +42,7 @@ export default class CameraControl extends cc.Component {
     lateUpdate(){
         if(this.world&&this.world.player){
             let targetPos = this.world.player.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
-            this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(targetPos),0.1);
+            this.node.position = Utils.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(targetPos),0.1);
             if(this.isZoomUp){
                 this.zoomUp();
             }else{
@@ -50,23 +51,10 @@ export default class CameraControl extends cc.Component {
         }
     }
     zoomUp(){
-        this.camera.zoomRatio = this.lerpnum(this.camera.zoomRatio,0.5,0.05);
+        this.camera.zoomRatio = Utils.lerpnum(this.camera.zoomRatio,0.5,0.05);
     }
     zoomDown(){
-        this.camera.zoomRatio = this.lerpnum(this.camera.zoomRatio,1.25,0.05);
-    }
-    lerpnum(self:number,to:number, ratio:number):number{
-        let out = 0;
-        out = self+(to-self)*ratio;
-        return out;
-    }
-    lerp(self:cc.Vec2,to:cc.Vec2, ratio:number):cc.Vec2 {
-        let out = cc.v2(0,0);
-        let x = self.x;
-        let y = self.y;
-        out.x = x + (to.x - x) * ratio;
-        out.y = y + (to.y - y) * ratio;
-        return out;
+        this.camera.zoomRatio = Utils.lerpnum(this.camera.zoomRatio,1.25,0.05);
     }
     // update (dt) {}
 }
