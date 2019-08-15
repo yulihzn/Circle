@@ -1,3 +1,5 @@
+import Logic from "./Logic";
+
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -11,20 +13,19 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Logic extends cc.Component {
+export default class GameSelect extends cc.Component {
 
 
-    static gameLevel = 0;
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
-        cc.game.setFrameRate(60);
-        cc.game.addPersistRootNode(this.node);
-        cc.view.enableAntiAlias(false);
-    }
+    // onLoad () {}
 
     start () {
 
+    }
+    loadGame(event,gameLevel:string){
+        Logic.gameLevel = parseInt(gameLevel);
+        cc.director.loadScene('loading');
     }
 
     // update (dt) {}

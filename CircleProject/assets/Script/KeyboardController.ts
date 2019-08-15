@@ -1,5 +1,5 @@
 import { EventConstant } from "./EventConstant";
-import GameUiStart from "./ui/GameUiStart";
+import GameUIStart from "./ui/GameUIStart";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -105,7 +105,7 @@ export default class KeyboardController extends cc.Component {
         }
         if(this.isA){
             // cc.director.emit(EventConstant.PLAYER_ATTACK);
-            if(GameUiStart.isPaused){
+            if(GameUIStart.isPaused){
                 cc.director.emit(EventConstant.GAME_START);
             }
         }

@@ -10,12 +10,13 @@
 
 const { ccclass, property } = cc._decorator;
 import { EventConstant } from './EventConstant';
-import Npc from './Npc';
 import Circle from './Circle';
-import GameUiStart from './ui/GameUiStart';
+import GameUIStart from './ui/GameUIStart';
 import AudioPlayer from './utils/AudioPlayer';
 import Building from './building/Building';
 import Item from './item/Item';
+import Npc from './npc/Npc';
+import FlyThief from './npc/FlyThief';
 
 @ccclass
 export default class Player extends Circle {
@@ -82,7 +83,7 @@ export default class Player extends Circle {
     }
 
     onBeginContact(contact:cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        if(GameUiStart.isPaused){
+        if(GameUIStart.isPaused){
             return;
         }
         if(this.level == Circle.MAX_LEVEL){
@@ -99,6 +100,10 @@ export default class Player extends Circle {
             item.taken(this);
         }
 
+        let flythief = otherCollider.node.getComponent(FlyThief);
+        if(flythief){
+            this.transfromScale(Circle.MAX_LEVEL-1,true);
+        }
         let npc = otherCollider.node.getComponent(Npc);
         if(npc){
             if(this.checkGoodLevelValid(npc.level)&&!this.isUpgrading){

@@ -1,6 +1,6 @@
-import Random from "./utils/Random";
-import Circle from "./Circle";
-import { EventConstant } from "./EventConstant";
+import Circle from "../Circle";
+import Random from "../utils/Random";
+import GameUIStart from "../ui/GameUIStart";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,41 +15,57 @@ import { EventConstant } from "./EventConstant";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Npc extends Circle {
+export default class FlyThief extends cc.Component{
 
-    // LIFE-CYCLE CALLBACKS:
-
+    anim:cc.Animation;
+    isMoving = false;//是否移动中
+    sprite: cc.Sprite;
+    rigidbody: cc.RigidBody;
+    speed:number = 2000;
 
     onLoad() {
-        this.isDied = false;
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
-        this.star = this.node.getChildByName('sprite').getChildByName('star').getComponent(cc.Sprite);
         this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
-        cc.director.on(EventConstant.PLAYER_LEVEL_UPDATE, (event) => { this.changeColor(event.detail.level);});
     }
-
+    move(pos: cc.Vec2) {
+        if (GameUIStart.isPaused) {
+            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            return;
+        }
+        let h = pos.x;
+        let v = pos.y;
+        let absh = Math.abs(h);
+        let absv = Math.abs(v);
+        this.isMoving = h != 0 || v != 0;
+        let mul = absh > absv ? absh : absv;
+        mul = mul == 0 ? 1 : mul;
+        let movement = cc.v2(h, v);
+        let sp = this.speed;
+        if (sp < 0) {
+            sp = 0;
+        }
+        movement = movement.mul(sp);
+        this.rigidbody.linearVelocity = movement;
+    }
     timeDelay = 0;
-    rate = 3;
     isTimeDelay(dt: number): boolean {
         this.timeDelay += dt;
-        if (this.timeDelay > this.rate) {
-            this.rate = Random.getRandomNum(1,6);
+        if (this.timeDelay > 1) {
             this.timeDelay = 0;
             return true;
         }
         return false;
     }
-    changeColor(level:number){
-        let rank = this.getCirleRank(this.level);
-        let playerrank = this.getCirleRank(level);
-        if(Math.abs(playerrank-rank)>=3){
-            this.sprite.node.color = cc.color(40,40,40);
-        }else{
-            this.sprite.node.color = cc.color(255,255,255);
+    onBeginContact(contact:cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+        if(GameUIStart.isPaused){
+            return;
+        }
+        let rigid = otherCollider.getComponent(cc.RigidBody);
+        if(rigid&&rigid.type != cc.RigidBodyType.Static){
+            contact.disabled = true;
         }
     }
-    
     update(dt:number) {
         if(this.isTimeDelay(dt)){
             this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));

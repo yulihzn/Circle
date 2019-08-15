@@ -1,6 +1,6 @@
 import Random from "../utils/Random";
 import { EventConstant } from "../EventConstant";
-import GameUiStart from "../ui/GameUiStart";
+import GameUIStart from "../ui/GameUIStart";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,7 +60,7 @@ export default class Building extends cc.Component {
 
     }
     move(pos: cc.Vec2) {
-        if (GameUiStart.isPaused) {
+        if (GameUIStart.isPaused) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             return;
         }

@@ -1,10 +1,13 @@
 import Player from "./Player";
 import { EventConstant } from "./EventConstant";
-import Npc from "./Npc";
 import Random from "./utils/Random";
 import Building from "./building/Building";
 import Circle from "./Circle";
 import Item from "./item/Item";
+import Npc from "./npc/Npc";
+import FlyThief from "./npc/FlyThief";
+import Logic from "./Logic";
+import Ghost from "./npc/Ghost";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,7 +31,10 @@ export default class GameWorld extends cc.Component {
     buildingPrefab: cc.Prefab = null;
     @property(cc.Prefab)
     shieldPrefab:cc.Prefab = null;
-
+    @property(cc.Prefab)
+    flythiefPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    ghostPrefab: cc.Prefab = null;
     private timeDelay = 0;
     private checkTimeDelay = 0;
     actorLayer:cc.Node;
@@ -94,6 +100,11 @@ export default class GameWorld extends cc.Component {
         for(let i = 0;i < 20;i++){
             this.addItem(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Item.TYPE_SHIELD);
         }
+        if(Logic.gameLevel == 1){
+            this.addFlyThief(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
+            this.addGhost(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
+            this.addGhost(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
+        }
     }
     delayAddNpcs(){
         let width = 1600;
@@ -146,7 +157,19 @@ export default class GameWorld extends cc.Component {
         building.node.zIndex = 3000;
         building.node.scale = scale;
     }
-    
+    addFlyThief(pos:cc.Vec2){
+        let fly = cc.instantiate(this.flythiefPrefab).getComponent(FlyThief);
+        fly.node.parent = this.actorLayer;
+        fly.node.position = pos;
+        fly.node.zIndex = 4000;
+    }
+    addGhost(pos:cc.Vec2){
+        let ghost = cc.instantiate(this.ghostPrefab).getComponent(Ghost);
+        ghost.node.parent = this.actorLayer;
+        ghost.node.position = pos;
+        ghost.node.zIndex = 4000;
+        ghost.gameWorld = this;
+    }
     start() {
     }
   

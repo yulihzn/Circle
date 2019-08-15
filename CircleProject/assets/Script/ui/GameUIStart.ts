@@ -15,7 +15,7 @@ import Joystick from "../Joystick";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class GameUiStart extends cc.Component {
+export default class GameUIStart extends cc.Component {
 
     //是否暂停
     static isPaused = true;
@@ -31,6 +31,12 @@ export default class GameUiStart extends cc.Component {
     guidDialog:cc.Node = null;
     @property(cc.Node)
     joystick:cc.Node = null;
+    @property(cc.Node)
+    playButton:cc.Node = null;
+    @property(cc.SpriteFrame)
+    playframe:cc.SpriteFrame =null;
+    @property(cc.SpriteFrame)
+    pauseframe:cc.SpriteFrame = null;
     
     // LIFE-CYCLE CALLBACKS:
 
@@ -40,7 +46,7 @@ export default class GameUiStart extends cc.Component {
         cc.director.on(EventConstant.GAME_FINISHED, (event) => { this.gameFinish() });
         cc.director.on(EventConstant.GAME_START, (event) => {
             if(this.startDialog.active){
-                this.GameUiStart();
+                this.gameStart();
             }else if(this.isGuidShow){
                 this.guideCloseToStart();
                 this.scheduleOnce(()=>{this.isGuidShow = false;},3);
@@ -49,14 +55,25 @@ export default class GameUiStart extends cc.Component {
             }
             });
         cc.director.on(EventConstant.GAME_OVER, (event) => { this.gameOver() });
+        this.playButton.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            if(cc.director.isPaused()){
+                cc.director.resume();
+                this.playButton.getComponent(cc.Sprite).spriteFrame = this.playframe;
+            }else{
+                this.playButton.getComponent(cc.Sprite).spriteFrame = this.pauseframe;
+                cc.director.pause();
+            }
+        }, this)
     }
 
     start () {
 
     }
   
+    home(){
+    }
     gameFinish(){
-        GameUiStart.isPaused = true;
+        GameUIStart.isPaused = true;
         this.startDialog.active = false;
         this.finishDialog.active = true;
         this.overDialog.active = false;
@@ -69,7 +86,7 @@ export default class GameUiStart extends cc.Component {
         this.world.init();
     }
     gameStart(){
-        GameUiStart.isPaused = true;
+        GameUIStart.isPaused = true;
         this.startDialog.active = false;
         this.finishDialog.active = false;
         this.overDialog.active = false;
@@ -77,7 +94,7 @@ export default class GameUiStart extends cc.Component {
         this.joystick.active = false;
     }
     guideCloseToStart(){
-        GameUiStart.isPaused = false;
+        GameUIStart.isPaused = false;
         this.startDialog.active = false;
         this.finishDialog.active = false;
         this.overDialog.active = false;
@@ -89,7 +106,7 @@ export default class GameUiStart extends cc.Component {
         }
     }
     gameOver(){
-        GameUiStart.isPaused = true;
+        GameUIStart.isPaused = true;
         this.startDialog.active = false;
         this.finishDialog.active = false;
         this.overDialog.active = true;

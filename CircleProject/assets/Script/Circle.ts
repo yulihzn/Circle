@@ -1,5 +1,5 @@
 import { EventConstant } from "./EventConstant";
-import GameUiStart from "./ui/GameUiStart";
+import GameUIStart from "./ui/GameUIStart";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -56,8 +56,10 @@ export default class Circle extends cc.Component {
         this.upgrade(level);
     }
     move(pos: cc.Vec2) {
-        if (GameUiStart.isPaused) {
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+        if (GameUIStart.isPaused) {
+            if(this.rigidbody){
+                this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            }
             return;
         }
         let h = pos.x;
@@ -73,7 +75,9 @@ export default class Circle extends cc.Component {
             sp = 0;
         }
         movement = movement.mul(sp);
-        this.rigidbody.linearVelocity = movement;
+        if(this.rigidbody){
+            this.rigidbody.linearVelocity = movement;
+        }
     }
     start () {
 
@@ -140,7 +144,4 @@ export default class Circle extends cc.Component {
         }
     }
     
-    update (dt) {
-        
-    }
 }
