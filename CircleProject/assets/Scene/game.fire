@@ -2587,8 +2587,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "Home",
-    "_N$string": "Home",
+    "_string": "Play Again",
+    "_N$string": "Play Again",
     "_fontSize": 30,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -7614,6 +7614,7 @@
     "over": {
       "__uuid__": "254b7935-c390-49f2-beef-77a2cfd0441a"
     },
+    "bg01": null,
     "bg02": null,
     "bg03": null,
     "_id": "24CUP45d9PiqiSxuVdsTjH"

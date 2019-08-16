@@ -102,7 +102,7 @@ export default class Player extends Circle {
 
         let flythief = otherCollider.node.getComponent(FlyThief);
         if(flythief){
-            this.transfromScale(Circle.MAX_LEVEL-1,true);
+            this.transfromScale(Circle.MAX_LEVEL,true);
         }
         let npc = otherCollider.node.getComponent(Npc);
         if(npc){

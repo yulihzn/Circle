@@ -27,6 +27,7 @@ export default class AudioPlayer extends cc.Component {
     upgrade: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     over: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
     bg01: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     bg02: cc.AudioClip = null;

@@ -1,6 +1,8 @@
 import Circle from "../Circle";
 import Random from "../utils/Random";
 import GameUIStart from "../ui/GameUIStart";
+import GameWorld from "../GameWorld";
+import Utils from "../utils/Utils";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,6 +24,7 @@ export default class FlyThief extends cc.Component{
     sprite: cc.Sprite;
     rigidbody: cc.RigidBody;
     speed:number = 2000;
+    gameWorld:GameWorld;
 
     onLoad() {
         this.rigidbody = this.getComponent(cc.RigidBody);
@@ -57,6 +60,15 @@ export default class FlyThief extends cc.Component{
         }
         return false;
     }
+    checktimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checktimeDelay += dt;
+        if (this.checktimeDelay > 0.1) {
+            this.checktimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
     onBeginContact(contact:cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
         if(GameUIStart.isPaused){
             return;
@@ -69,6 +81,10 @@ export default class FlyThief extends cc.Component{
     update(dt:number) {
         if(this.isTimeDelay(dt)){
             this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
+        }
+        if(this.isCheckTimeDelay(dt)&&this.gameWorld&&this.gameWorld.player&&Utils.getDistance(this.node.position,this.gameWorld.player.node.position)<200){
+            let pos = this.node.position.subSelf(this.gameWorld.player.node.position);
+            this.move(pos.normalizeSelf());
         }
     }
 }

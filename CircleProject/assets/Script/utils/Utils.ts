@@ -14,4 +14,9 @@ export default class Utils {
         out.y = y + (to.y - y) * ratio;
         return out;
     }
+    static getDistance(v1, v2) {
+        let x = v1.x - v2.x;
+        let y = v1.y - v2.y;
+        return Math.sqrt(x * x + y * y);
+    }
 }

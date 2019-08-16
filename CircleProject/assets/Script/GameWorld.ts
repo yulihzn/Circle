@@ -152,7 +152,7 @@ export default class GameWorld extends cc.Component {
     }
     addBuilding(pos:cc.Vec2,scale:number){
         let building = cc.instantiate(this.buildingPrefab).getComponent(Building);
-        building.node.parent = this.node;
+        building.node.parent = this.actorLayer;
         building.node.position = pos;
         building.node.zIndex = 3000;
         building.node.scale = scale;
@@ -162,6 +162,7 @@ export default class GameWorld extends cc.Component {
         fly.node.parent = this.actorLayer;
         fly.node.position = pos;
         fly.node.zIndex = 4000;
+        fly.gameWorld = this;
     }
     addGhost(pos:cc.Vec2){
         let ghost = cc.instantiate(this.ghostPrefab).getComponent(Ghost);
