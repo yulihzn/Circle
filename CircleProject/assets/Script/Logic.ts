@@ -8,22 +8,23 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Logic extends cc.Component {
 
-
+    //图片资源
+    static spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     static gameLevel = 0;
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         cc.game.setFrameRate(60);
         cc.game.addPersistRootNode(this.node);
         cc.view.enableAntiAlias(false);
     }
 
-    start () {
+    start() {
 
     }
 

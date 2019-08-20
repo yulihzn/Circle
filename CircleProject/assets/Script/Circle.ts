@@ -1,5 +1,6 @@
 import { EventConstant } from "./EventConstant";
 import GameUIStart from "./ui/GameUIStart";
+import Logic from "./Logic";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,30 +27,6 @@ export default class Circle extends cc.Component {
     level = 0;
     rim:cc.Node;
     static readonly MAX_LEVEL = 31;
-    @property(cc.SpriteFrame)
-    circle000:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    circle001:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    circle002:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    circle003:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    circle004:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    circle005:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    circle006:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    circle007:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    star1:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    star2:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    star3:cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    star4:cc.SpriteFrame = null;
     // LIFE-CYCLE CALLBACKS:
 
     init(level:number){
@@ -94,32 +71,32 @@ export default class Circle extends cc.Component {
         this.star.spriteFrame = ss[1];
     }
     getLevelSpriteframe(level:number):cc.SpriteFrame[]{
-        let arr = [null,this.star1,this.star2,this.star3,this.star4];
+        let arr = [null,Logic.spriteFrames['star1'],Logic.spriteFrames['star2'],Logic.spriteFrames['star3'],Logic.spriteFrames['star4']];
         let spriteframe1 = null;
         let spriteframe2 = null;
         if(level<1){
-            spriteframe1 = this.circle000;
+            spriteframe1 = Logic.spriteFrames['circle000'];
             spriteframe2 = null;
         }else if(level > 0 && level <= 5){
-            spriteframe1 = this.circle001;
+            spriteframe1 = Logic.spriteFrames['circle001'];
             spriteframe2 = arr[level-1];
         }else if(level > 5 && level <= 10){
-            spriteframe1 = this.circle002;
+            spriteframe1 = Logic.spriteFrames['circle002'];
             spriteframe2 = arr[level-6];
         }else if(level > 10 && level <= 15){
-            spriteframe1 = this.circle003;
+            spriteframe1 = Logic.spriteFrames['circle003'];
             spriteframe2 = arr[level-11];
         }else if(level > 15 && level <= 20){
-            spriteframe1 = this.circle004;
+            spriteframe1 = Logic.spriteFrames['circle004']
             spriteframe2 = arr[level-16];
         }else if(level > 20 && level <= 25){
-            spriteframe1 = this.circle005;
+            spriteframe1 = Logic.spriteFrames['circle005']
             spriteframe2 = arr[level-21];
         }else if(level > 25 && level <= 30){
-            spriteframe1 = this.circle006;
+            spriteframe1 = Logic.spriteFrames['circle006']
             spriteframe2 = arr[level-26];
         }else if(level > 30){
-            spriteframe1 = this.circle007;
+            spriteframe1 = Logic.spriteFrames['circle007'];
             spriteframe2 = null;
         }
         return [spriteframe1,spriteframe2];
