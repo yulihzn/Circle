@@ -12,11 +12,19 @@ export default class LevelData{
         this.width = data.width?data.width:0;
         this.height = data.height?data.height:0;
         this.randomCircleNum = data.randomCircleNum?data.randomCircleNum:0;
+        this.targetLevel = data.targetLevel?data.targetLevel:1;
+        this.flyThief = data.flyThief?data.flyThief:0;
+        this.ghostBall = data.ghostBall?data.ghostBall:0;
     }
     clone():LevelData{
         let e = new LevelData();
         e.level = this.level;
+        e.width = this.width;
+        e.height = this.height;
         e.randomCircleNum = this.randomCircleNum;
+        e.targetLevel = this.targetLevel;
+        e.flyThief = this.flyThief;
+        e.ghostBall = this.ghostBall;
         return e;
     } 
 }

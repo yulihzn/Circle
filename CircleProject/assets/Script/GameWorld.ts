@@ -35,6 +35,8 @@ export default class GameWorld extends cc.Component {
     flythiefPrefab: cc.Prefab = null;
     @property(cc.Prefab)
     ghostPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    revolutePrefab: cc.Prefab = null;
     private timeDelay = 0;
     private checkTimeDelay = 0;
     actorLayer:cc.Node;
@@ -105,6 +107,9 @@ export default class GameWorld extends cc.Component {
             this.addGhost(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
             this.addGhost(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
         }
+        if(Logic.gameLevel == 2){
+            this.addRevolute(cc.v2(0,0));
+        }
     }
     delayAddNpcs(){
         let width = 1600;
@@ -170,6 +175,12 @@ export default class GameWorld extends cc.Component {
         ghost.node.position = pos;
         ghost.node.zIndex = 4000;
         ghost.gameWorld = this;
+    }
+    addRevolute(pos:cc.Vec2){
+        let building = cc.instantiate(this.revolutePrefab);
+        building.parent = this.actorLayer;
+        building.position = pos;
+        building.zIndex = 3000;
     }
     start() {
     }
