@@ -1,10 +1,12 @@
 {
-  "ver": "2.3.1",
+  "ver": "2.3.3",
   "uuid": "cd66cd93-bc04-429a-be96-90a0bf505958",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "circle000": {

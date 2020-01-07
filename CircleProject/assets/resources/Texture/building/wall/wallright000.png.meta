@@ -1,10 +1,12 @@
 {
-  "ver": "2.3.1",
+  "ver": "2.3.3",
   "uuid": "525a8893-45aa-4c04-81e2-1705c3546e5a",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "wallright000": {
