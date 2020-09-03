@@ -6,8 +6,8 @@ export default class Utils {
         out = self+(to-self)*ratio;
         return out;
     }
-    static lerp(self:cc.Vec2,to:cc.Vec2, ratio:number):cc.Vec2 {
-        let out = cc.v2(0,0);
+    static lerp(self:cc.Vec3,to:cc.Vec3, ratio:number):cc.Vec3 {
+        let out = cc.v3(0,0);
         let x = self.x;
         let y = self.y;
         out.x = x + (to.x - x) * ratio;

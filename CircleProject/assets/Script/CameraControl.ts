@@ -41,7 +41,7 @@ export default class CameraControl extends cc.Component {
     }
     lateUpdate(){
         if(this.world&&this.world.player){
-            let targetPos = this.world.player.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+            let targetPos = this.world.player.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
             this.node.position = Utils.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(targetPos),0.1);
             if(this.isZoomUp){
                 this.zoomUp();

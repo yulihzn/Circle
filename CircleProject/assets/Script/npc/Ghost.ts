@@ -29,9 +29,9 @@ export default class Ghost extends cc.Component{
     onLoad() {
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
-        this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
+        this.move(cc.v3(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
     }
-    move(pos: cc.Vec2) {
+    move(pos: cc.Vec3) {
         if (GameUIStart.isPaused) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             return;

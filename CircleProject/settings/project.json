@@ -13,7 +13,11 @@
   "design-resolution-width": 1280,
   "excluded-modules": [
     "VideoPlayer",
-    "WebView"
+    "WebView",
+    "3D Physics/cannon.js",
+    "3D Physics/Builtin",
+    "3D Particle",
+    "SafeArea"
   ],
   "facebook": {
     "appID": "",
@@ -31,7 +35,7 @@
     "default",
     "ui"
   ],
-  "last-module-event-record-time": 1566557688554,
+  "last-module-event-record-time": 1599121763269,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,
@@ -39,5 +43,8 @@
   },
   "start-scene": "adc3b5ae-1d3e-40fd-b4f5-a7cd11fdbc6c",
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false
+  "use-project-simulator-setting": false,
+  "migrate-history": [
+    "cloud-function"
+  ]
 }

@@ -21,7 +21,6 @@ export default class Logic extends cc.Component {
     onLoad() {
         cc.game.setFrameRate(60);
         cc.game.addPersistRootNode(this.node);
-        cc.view.enableAntiAlias(false);
     }
 
     start() {

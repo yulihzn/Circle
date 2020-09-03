@@ -41,7 +41,10 @@ export default class AudioPlayer extends cc.Component {
     }
     playbg() {
         let clip = Random.getHalfChance() ? this.bg01 : this.bg03;
-        cc.audioEngine.playMusic(clip, true);
+        if(clip){
+            cc.audioEngine.stopMusic();
+            cc.audioEngine.playMusic(clip, true);
+        }
     }
     play(name: string) {
         switch (name) {

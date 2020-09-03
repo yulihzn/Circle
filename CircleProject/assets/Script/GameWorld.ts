@@ -96,29 +96,29 @@ export default class GameWorld extends cc.Component {
         
         let width = 1600;
         for(let i = 0;i < 100;i++){
-            this.addBuilding(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Random.getRandomNum(1,6)+Random.rand());
+            this.addBuilding(cc.v3(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Random.getRandomNum(1,6)+Random.rand());
         }
         this.scheduleOnce(()=>{this.delayAddNpcs();},0.2);
         for(let i = 0;i < 20;i++){
             this.addItem(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)),Item.TYPE_SHIELD);
         }
         if(Logic.gameLevel == 1){
-            this.addFlyThief(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
-            this.addGhost(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
-            this.addGhost(cc.v2(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
+            this.addFlyThief(cc.v3(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
+            this.addGhost(cc.v3(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
+            this.addGhost(cc.v3(Random.getRandomNum(-width,width),Random.getRandomNum(-width,width)));
         }
         if(Logic.gameLevel == 2){
-            this.addRevolute(cc.v2(0,0));
+            this.addRevolute(cc.v3(0,0));
         }
     }
     delayAddNpcs(){
         let width = 1600;
         let range = cc.v2(0,Circle.MAX_LEVEL);
         for(let i = 0;i < 300;i++){
-            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),Random.getRandomNum(range.x,range.y));
+            this.addNpc(cc.v3(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),Random.getRandomNum(range.x,range.y));
         }
         for(let i = 0;i < Circle.MAX_LEVEL+1;i++){
-            this.addNpc(cc.v2(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),i);
+            this.addNpc(cc.v3(Random.getRandomNum(-width+100,width-100),Random.getRandomNum(-width+100,width-100)),i);
         }
         
     }
@@ -146,7 +146,7 @@ export default class GameWorld extends cc.Component {
         item.node.position = pos;
         item.node.zIndex = 1000;
     }
-    addNpc(pos:cc.Vec2,level:number){
+    addNpc(pos:cc.Vec3,level:number){
         let npc = cc.instantiate(this.npcPrefab).getComponent(Npc);
         npc.node.parent = this.actorLayer;
         npc.node.position = pos;
@@ -155,28 +155,28 @@ export default class GameWorld extends cc.Component {
         npc.changeColor(this.player.level);
         this.npcList.push(npc);
     }
-    addBuilding(pos:cc.Vec2,scale:number){
+    addBuilding(pos:cc.Vec3,scale:number){
         let building = cc.instantiate(this.buildingPrefab).getComponent(Building);
         building.node.parent = this.actorLayer;
         building.node.position = pos;
         building.node.zIndex = 3000;
         building.node.scale = scale;
     }
-    addFlyThief(pos:cc.Vec2){
+    addFlyThief(pos:cc.Vec3){
         let fly = cc.instantiate(this.flythiefPrefab).getComponent(FlyThief);
         fly.node.parent = this.actorLayer;
         fly.node.position = pos;
         fly.node.zIndex = 4000;
         fly.gameWorld = this;
     }
-    addGhost(pos:cc.Vec2){
+    addGhost(pos:cc.Vec3){
         let ghost = cc.instantiate(this.ghostPrefab).getComponent(Ghost);
         ghost.node.parent = this.actorLayer;
         ghost.node.position = pos;
         ghost.node.zIndex = 4000;
         ghost.gameWorld = this;
     }
-    addRevolute(pos:cc.Vec2){
+    addRevolute(pos:cc.Vec3){
         let building = cc.instantiate(this.revolutePrefab);
         building.parent = this.actorLayer;
         building.position = pos;

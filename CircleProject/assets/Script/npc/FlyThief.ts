@@ -29,9 +29,9 @@ export default class FlyThief extends cc.Component{
     onLoad() {
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
-        this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
+        this.move(cc.v3(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
     }
-    move(pos: cc.Vec2) {
+    move(pos: cc.Vec3) {
         if (GameUIStart.isPaused) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             return;
@@ -80,7 +80,7 @@ export default class FlyThief extends cc.Component{
     }
     update(dt:number) {
         if(this.isTimeDelay(dt)){
-            this.move(cc.v2(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
+            this.move(cc.v3(Random.getHalfChance()?Random.rand():-Random.rand(),Random.getHalfChance()?Random.rand():-Random.rand()));
         }
         if(this.isCheckTimeDelay(dt)&&this.gameWorld&&this.gameWorld.player&&Utils.getDistance(this.node.position,this.gameWorld.player.node.position)<200){
             let pos = this.node.position.subSelf(this.gameWorld.player.node.position);
