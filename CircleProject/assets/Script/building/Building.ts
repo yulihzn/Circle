@@ -26,7 +26,7 @@ export default class Building extends cc.Component {
     shadowarr:number[] = [-1.1,-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1,1.2];
     shadowopacityarr:number[] = [20,40,60,80,100,120,140,160,180,200,220,240,220,200,180,160,140,120,100,80,60,40,20,0];
     onLoad() {
-        cc.director.on(EventConstant.TIME_CHANGE, (event) => { this.changeShadow(event.detail.time) });
+        cc.director.on(EventConstant.TIME_CHANGE, (event) => { if(this.node)this.changeShadow(event.detail.time) });
         this.sprite = this.node.getChildByName('sprite');
         this.shadow = this.node.getChildByName('shadow');
         this.collider = this.getComponent(cc.PhysicsCircleCollider);
@@ -52,9 +52,7 @@ export default class Building extends cc.Component {
         this.changeShadow(0);
     }
     changeShadow(time: number) {
-        this.shadow.scaleX = this.shadowarr[time];
-        this.shadow.scaleX +=time<=12?-0.5:0.5;
-        this.shadow.opacity = this.shadowopacityarr[time];
+        cc.tween(this.shadow).to(0.5,{scaleX:this.shadowarr[time]+time<=12?-0.5:0.5,opacity:this.shadowopacityarr[time]}).start();
     }
     start() {
 

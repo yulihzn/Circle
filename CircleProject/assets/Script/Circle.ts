@@ -1,4 +1,3 @@
-import { EventConstant } from "./EventConstant";
 import GameUIStart from "./ui/GameUIStart";
 import Logic from "./Logic";
 

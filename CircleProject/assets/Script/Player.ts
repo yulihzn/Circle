@@ -65,7 +65,7 @@ export default class Player extends Circle {
             return;
         }
         this.changeRes(level);
-        this.node.runAction(cc.scaleTo(0.2,1+level/8));
+        cc.tween(this.node).to(0.2,{scale:1+level/8}).start();
         this.isProtecting = true;
         this.isUpgrading = true;
         if(!this.anim){

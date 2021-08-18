@@ -72,6 +72,9 @@ export default class GameUIStart extends cc.Component {
   
     home(){
     }
+    backToSelect(){
+        cc.director.loadScene('select');
+    }
     gameFinish(){
         GameUIStart.isPaused = true;
         this.startDialog.active = false;

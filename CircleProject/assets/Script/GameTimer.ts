@@ -26,7 +26,7 @@ export default class GameTimer extends cc.Component {
     timeDelay = 0;
     isTimeDelay(dt: number): boolean {
         this.timeDelay += dt;
-        if (this.timeDelay > 60) {
+        if (this.timeDelay > 1) {
             this.timeDelay = 0;
             return true;
         }

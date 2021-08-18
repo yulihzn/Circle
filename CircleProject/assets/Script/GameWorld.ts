@@ -48,10 +48,7 @@ export default class GameWorld extends cc.Component {
     colorarr:number[] = [233,235,237,239,241,243,245,247,249,251,253,255,253,251,249,247,245,243,241,239,237,235,233,231];
     spritebasebg:cc.Node;
     spritebg:cc.Node;
-    spritewalltop:cc.Node;
-    spritewallbottom:cc.Node;
-    spritewallleft:cc.Node;
-    spritewallright:cc.Node;
+    spritewallsides:cc.Node;
     
     onLoad() {
         //关闭调试
@@ -70,13 +67,10 @@ export default class GameWorld extends cc.Component {
         // cc.PhysicsManager.DrawBits.e_jointBit |
         // cc.PhysicsManager.DrawBits.e_shapeBit
         ;
-        cc.director.on(EventConstant.TIME_CHANGE, (event) => { this.changeShadow(event.detail.time) });
+        cc.director.on(EventConstant.TIME_CHANGE, (event) => { if(this.node)this.changeShadow(event.detail.time) });
         this.spritebasebg = this.node.getChildByName('basebg');
         this.spritebg = this.node.getChildByName('background');
-        this.spritewalltop = this.node.getChildByName('background').getChildByName('airwalltop').getChildByName('sprite');
-        this.spritewallbottom = this.node.getChildByName('background').getChildByName('airwallbottom').getChildByName('sprite');
-        this.spritewallleft = this.node.getChildByName('background').getChildByName('airwallleft').getChildByName('sprite');
-        this.spritewallright = this.node.getChildByName('background').getChildByName('airwallright').getChildByName('sprite');
+        this.spritewallsides = this.node.getChildByName('airwallsides');
         this.shadow = this.node.getChildByName('shadow');
         this.actorLayer = this.node.getChildByName('actorlayer');
         this.actorLayer.zIndex = 2000;
@@ -126,12 +120,10 @@ export default class GameWorld extends cc.Component {
     changeShadow(time: number) {
         // this.shadow.opacity = this.shadowarr[time];
         this.shadow.opacity = 0;
-        this.spritebasebg.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
-        this.spritebg.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
-        this.spritewalltop.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
-        this.spritewallbottom.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
-        this.spritewallleft.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
-        this.spritewallright.color=cc.color(this.colorarr[time],this.colorarr[time],this.colorarr[time]);
+        let c = this.colorarr[time];
+        cc.tween(this.spritebasebg).to(0.5,{color:cc.color(c,c,c)}).start();
+        cc.tween(this.spritebg).to(0.5,{color:cc.color(c,c,c)}).start();
+        cc.tween(this.spritewallsides).to(0.5,{color:cc.color(c,c,c)}).start();
     }
     addItem(pos:cc.Vec2,itemType:number){
         let prefab = null;

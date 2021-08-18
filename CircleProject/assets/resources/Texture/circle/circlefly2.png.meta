@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "eef0c038-3475-49ec-8cf5-ef87a6424322",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "circlefly2": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "a53f7fba-b7fb-4e54-88cd-1d213cdf6615",
+      "importer": "sprite-frame",
       "rawTextureUuid": "eef0c038-3475-49ec-8cf5-ef87a6424322",
       "trimType": "custom",
       "trimThreshold": 1,

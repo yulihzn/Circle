@@ -21,23 +21,23 @@ export default class AudioPlayer extends cc.Component {
     public static readonly PLAYER_HIT = 'PLAYER_HIT';
     public static readonly STOP_BG = 'STOP_BG';
     public static readonly PLAY_BG = 'PLAY_BG';
-    @property({ type: cc.AudioClip })
+    @property(cc.AudioClip)
     hit: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
+    @property(cc.AudioClip)
     upgrade: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
+    @property(cc.AudioClip)
     over: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
+    @property(cc.AudioClip)
     bg01: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
+    @property(cc.AudioClip)
     bg02: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
+    @property(cc.AudioClip)
     bg03: cc.AudioClip = null;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         cc.director.on(EventConstant.PLAY_AUDIO
-            , (event) => { this.play(event.detail.name) });
+            , (event) => { if(this.node){this.play(event.detail.name)} });
     }
     playbg() {
         let clip = Random.getHalfChance() ? this.bg01 : this.bg03;

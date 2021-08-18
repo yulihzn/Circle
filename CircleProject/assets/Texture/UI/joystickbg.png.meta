@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "c706d14f-b0f1-4326-b116-2ba9e2097990",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "joystickbg": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "a9ba17e5-1ab5-40b8-b441-a8c6c4058d33",
+      "importer": "sprite-frame",
       "rawTextureUuid": "c706d14f-b0f1-4326-b116-2ba9e2097990",
       "trimType": "custom",
       "trimThreshold": 1,
